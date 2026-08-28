@@ -136,6 +136,45 @@ const PHOTOS = [
     maxWidth: 1200,
     note: "Almond-topped tea cake in a branded tin.",
   },
+
+  /*
+    Diwali shoot, 2026-08-28.
+
+    A caution on all four: the label text on the packaging is garbled, and on
+    `chocolate-slab` and `cookie-tins` it is mirrored outright. It is illegible
+    at the sizes the site renders (checked at 400px, the real card width, where
+    only the panda badge reads), so they are fine as cards and gallery tiles.
+    Do NOT promote any of them to a full-width hero or feature slot, where the
+    backwards lettering becomes readable.
+  */
+  {
+    name: "festive-spread",
+    source: `${SOURCE_DIR}/14.png`,
+    out: "festive-cookie-gift-hamper-spread",
+    maxWidth: 1200,
+    note: "Cookie tins, jars and wrapped cookies with pink ribbon. Festive range.",
+  },
+  {
+    name: "cookie-tins",
+    source: `${SOURCE_DIR}/15.png`,
+    out: "diwali-cookie-tins-and-brownie-boxes",
+    maxWidth: 1200,
+    note: "Overhead spread: cookie tins, brownie boxes, jars, gold ribbon. Mirrored lid text at full size.",
+  },
+  {
+    name: "gift-jars",
+    source: `${SOURCE_DIR}/16.png`,
+    out: "diwali-cookie-gift-jars",
+    maxWidth: 1200,
+    note: "Six branded jars of coloured cookies on a beaded mat with a diya. Cleanest labels of the four.",
+  },
+  {
+    name: "chocolate-slab",
+    source: `${SOURCE_DIR}/17.png`,
+    out: "handmade-chocolate-slabs-gift-packs",
+    maxWidth: 1200,
+    note: "Two packs of piped chocolate slabs. Both labels mirrored at full size.",
+  },
 ];
 
 const wanted = process.argv[2];
