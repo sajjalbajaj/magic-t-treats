@@ -15,6 +15,11 @@ export type AdminSession = {
 };
 
 /**
+ * Ceiling on the auth round-trip. Matches `proxy.ts`; see the note there.
+ */
+const AUTH_TIMEOUT_MS = 3000;
+
+/**
  * Resolves the current admin, or null.
  *
  * Two checks, both required:
@@ -30,12 +35,21 @@ export async function getAdminSession(): Promise<AdminSession | null> {
 
   const supabase = await createServerSupabaseClient();
 
-  const {
-    data: { user },
-    error: userError,
-  } = await supabase.auth.getUser();
+  /*
+    Bounded, and fails closed.
 
-  if (userError || !user) return null;
+    `getUser()` carries no timeout of its own. On 2026-08-28 the project's auth
+    service stopped responding while the database stayed healthy, and every
+    admin request hung on this line instead of returning a login screen.
+    Treating an unreachable auth service as "not signed in" is the safe
+    reading: the worst case is an admin being asked to log in again.
+  */
+  const user = await Promise.race([
+    supabase.auth.getUser().then(({ data, error }) => (error ? null : data.user)),
+    new Promise<null>((resolve) => setTimeout(() => resolve(null), AUTH_TIMEOUT_MS)),
+  ]).catch(() => null);
+
+  if (!user) return null;
 
   const { data: adminRow, error: adminError } = await supabase
     .from("admin_users")
