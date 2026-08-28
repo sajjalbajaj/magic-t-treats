@@ -1,0 +1,39 @@
+# dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# next.js
+.next/
+out/
+build/
+next-env.d.ts
+
+# production
+dist/
+
+# environment — never commit real secrets
+.env
+.env.local
+.env*.local
+.env.production
+
+# testing
+coverage/
+playwright-report/
+test-results/
+.fold-shots/
+.frames/
+.vitest/
+
+# supabase local
+supabase/.branches
+supabase/.temp
+
+# misc
+.DS_Store
+*.pem
+.vercel
+.idea/
+.vscode/
+*.tsbuildinfo

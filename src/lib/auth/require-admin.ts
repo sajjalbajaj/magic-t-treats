@@ -1,0 +1,70 @@
+import "server-only";
+
+import { redirect } from "next/navigation";
+import type { SupabaseClient, User } from "@supabase/supabase-js";
+
+import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { isSupabaseConfigured } from "@/lib/supabase/env";
+import type { AdminRole, Database } from "@/types/database";
+
+export type AdminSession = {
+  user: User;
+  role: AdminRole;
+  fullName: string | null;
+  supabase: SupabaseClient<Database>;
+};
+
+/**
+ * Resolves the current admin, or null.
+ *
+ * Two checks, both required:
+ *   1. `getUser()` — validates the JWT against Supabase Auth. Session cookies
+ *      are attacker-controllable, so `getSession()` alone is not sufficient.
+ *   2. An active row in `admin_users` — being signed in is not being an admin.
+ */
+export async function getAdminSession(): Promise<AdminSession | null> {
+  // Without credentials there is no session to resolve. Returning null sends
+  // the caller to the login screen, which explains what is missing — throwing
+  // here would surface as a 500 on every /admin route instead.
+  if (!isSupabaseConfigured()) return null;
+
+  const supabase = await createServerSupabaseClient();
+
+  const {
+    data: { user },
+    error: userError,
+  } = await supabase.auth.getUser();
+
+  if (userError || !user) return null;
+
+  const { data: adminRow, error: adminError } = await supabase
+    .from("admin_users")
+    .select("role, full_name, is_active")
+    .eq("user_id", user.id)
+    .maybeSingle();
+
+  if (adminError || !adminRow || !adminRow.is_active) return null;
+
+  return {
+    user,
+    role: adminRow.role,
+    fullName: adminRow.full_name,
+    supabase,
+  };
+}
+
+/**
+ * Server-side gate for every admin page and mutation.
+ *
+ * Middleware already blocks unauthenticated requests to /admin, but middleware
+ * is a convenience, not a security boundary — it can be bypassed by anything
+ * that reaches a server action directly. Every privileged entry point calls
+ * this, and RLS backstops it a third time at the database.
+ */
+export async function requireAdmin(): Promise<AdminSession> {
+  const session = await getAdminSession();
+  if (!session) {
+    redirect("/auth/login?reason=unauthorized");
+  }
+  return session;
+}
