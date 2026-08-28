@@ -383,16 +383,34 @@ npm run test:e2e     # needs E2E_ADMIN_EMAIL / E2E_ADMIN_PASSWORD + Supabase
 
 ## State as of 2026-08-28
 
-Complete and building: public site, enquiry flow, full dashboard (enquiries,
-orders, products, categories, available-today, posts, collections,
-testimonials, content, media, analytics, settings), RLS, SEO, motion system,
-brand assets, 94 unit tests.
+Complete and verified against a live Supabase project: public site, enquiry
+flow, full dashboard (enquiries, orders, products, categories, available-today,
+posts, collections, testimonials, content, media, analytics, settings), RLS,
+SEO, motion system, brand assets, photography, 106 unit tests.
 
-**Not yet done:** never run against a live Supabase project — migrations, RLS
-policies and the dashboard are unexecuted. Playwright browsers not installed,
-so E2E has not run. No poster frames for the two homepage reels (no ffmpeg).
-No git repo yet; if published, use the `sajjalbajaj` identity per
-`../CLAUDE.md`.
+Verified in a real browser, not by inspection: site scan clean, WCAG AA across
+595 measured elements, hero fits the fold at six viewports.
+
+**Published** to `github.com/sajjalbajaj/magic-t-treats`, **private**, as
+`Sajjal Bajaj <sajjalbajaj@gmail.com>` set as a local repo override per
+`../CLAUDE.md`. `.env.local` is ignored; the Supabase URL, anon key and
+service-role key were each checked by VALUE against every committed file before
+the first push. Only `.env.example`, with empty values, is tracked.
+
+**Not yet done:**
+
+- **Photography covers 6 of 18 products and 0 of 8 categories.** The gift-box
+  and chocolate lines are shot; cookies, brownies, muffins, the banana loaf,
+  choco bites, custom-shape chocolates and both sugar-free items are not. This
+  is why the homepage still renders empty-slot placeholders.
+- Playwright browsers are installed and the verification scripts run, but the
+  **E2E dashboard specs have never been executed**.
+- **No poster frames** for the two homepage reels; there is no ffmpeg here.
+- `handmade-dates-chocolates-box.webp` is built but deliberately **unused**:
+  the poster has truncated text baked in, reading "Healthy Indul".
+- **The hero arch shows videos only.** `getReels()` filters on
+  `type = 'video'`, so a still flagged `show_on_homepage` reaches the
+  "From the Kitchen" section but never the slider.
 
 ## Agents
 
