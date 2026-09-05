@@ -37,3 +37,10 @@ supabase/.temp
 .idea/
 .vscode/
 *.tsbuildinfo
+
+# semantic code index — derived data, rebuilt by .cocoindex/index.cmd
+.cocoindex/index/
+.cocoindex/state.db
+.cocoindex/state.db-*
+__pycache__/
+*.pyc

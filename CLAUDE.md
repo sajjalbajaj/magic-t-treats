@@ -374,6 +374,22 @@ Media supplied by the owner, committed to `public/media/`:
 server actions by domain · `src/lib/data` read layer · `src/lib/admin/actions.ts`
 authz + audit + revalidation helpers · `supabase/migrations` 9 ordered files.
 
+## Tooling
+
+CocoIndex is initialized — query symbols by meaning before reaching for grep.
+
+```bash
+.cocoindex\index.cmd                          # build or refresh (incremental)
+cd .cocoindex && python main.py query "..."   # search
+```
+
+Vectors live in LanceDB, which is a directory rather than a server: there is no
+Docker and no database to start. This machine has neither Docker nor pgvector,
+which is why it does not follow the Postgres pattern used by
+`python-projects/migration`. The index and CocoIndex's state file are
+git-ignored derived data; delete `.cocoindex/index/` and re-run to rebuild.
+Indexes `src/`, `supabase/`, `scripts/` and root Markdown — 161 files.
+
 ## Commands
 
 ```bash
