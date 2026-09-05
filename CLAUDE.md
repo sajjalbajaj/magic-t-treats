@@ -392,7 +392,16 @@ SEO, motion system, brand assets, photography, 106 unit tests.
 Verified in a real browser, not by inspection: site scan clean, WCAG AA across
 595 measured elements, hero fits the fold at six viewports.
 
-**Published** to `github.com/sajjalbajaj/magic-t-treats`, **private**, as
+**Live** at **https://www.magicttreats.in**, deployed on Vercel from the GitHub
+repo, with `magic-t-treats.vercel.app` as a fallback URL. Verified against the
+real domain: site scan clean, WCAG AA, hero fits the fold at six viewports, and
+no credential value present in the HTML or any of the 15 client JS chunks.
+
+The bare `magicttreats.in` still resolves to GoDaddy: its `A @` record is held
+by a free Websites + Marketing site and has to be released before it can point
+at Vercel. Vercel already has the apex-to-www redirect configured.
+
+**Published** to `github.com/sajjalbajaj/magic-t-treats`, now **public**, as
 `Sajjal Bajaj <sajjalbajaj@gmail.com>` set as a local repo override per
 `../CLAUDE.md`. `.env.local` is ignored; the Supabase URL, anon key and
 service-role key were each checked by VALUE against every committed file before
@@ -559,3 +568,8 @@ Primary: `web-dev`. UI polish: `ui-ux`.
   `lib/seo/alt-text.ts`. Branded failure states replaced the browser's
   broken-image glyph everywhere, including admin thumbnails; `MediaFrame` moved
   to `components/ui/` now that both surfaces use it.
+- 2026-08-29: Deployed to Vercel and pointed `www.magicttreats.in` at it. Chose
+  the full server-rendered app over a GitHub Pages static export: Pages runs no
+  server, so it would have dropped the dashboard, recorded enquiries, analytics,
+  live content editing and the security headers. Static-export scaffolding was
+  built and then reverted.
